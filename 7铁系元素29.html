@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>7铁系元素29 - 刷题卡</title>
+<style>
+  :root { --bg: #f2f2f7; --card-bg: #fff; --text: #1c1c1e; --primary: #007aff; --danger: #ff3b30; --success: #34c759; }
+  body { margin: 0; padding: 16px; font-family: -apple-system, BlinkMacSystemFont, sans-serif; background: var(--bg); color: var(--text); display: flex; flex-direction: column; align-items: center; min-height: 90vh; user-select: none; }
+  .header { width: 100%; max-width: 680px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+  .nav-back { font-size: 14px; color: var(--primary); text-decoration: none; font-weight: 600; padding: 6px 10px; background: #e5e5ea; border-radius: 8px; }
+  .deck-title { font-size: 15px; font-weight: 600; color: #3a3a3c; max-width: 45%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .btn-reset { padding: 6px 12px; font-size: 13px; background: #e5e5ea; border: none; border-radius: 8px; cursor: pointer; color: #1c1c1e; font-weight: 500; }
+  .card-box { width: 100%; max-width: 680px; min-height: 380px; max-height: 62vh; height: 52vh; perspective: 1200px; cursor: pointer; }
+  .card-inner { width: 100%; height: 100%; position: relative; transform-style: preserve-3d; transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1); border-radius: 18px; box-shadow: 0 10px 25px rgba(0,0,0,0.07); }
+  .card-inner.flipped { transform: rotateY(180deg); }
+  .card-face { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; background: var(--card-bg); border-radius: 18px; display: flex; justify-content: center; align-items: center; padding: 14px; box-sizing: border-box; overflow: hidden; }
+  .card-back { transform: rotateY(180deg); background: #fafbfc; }
+  .card-face img { max-width: 100%; max-height: 100%; object-fit: contain; pointer-events: none; }
+  .badge { position: absolute; top: 12px; left: 16px; font-size: 11px; font-weight: 700; color: #aeaeb2; letter-spacing: 0.5px; }
+  .prog-tag { position: absolute; top: 12px; right: 16px; font-size: 12px; color: #8e8e93; font-weight: 600; }
+  .controls { display: flex; gap: 12px; width: 100%; max-width: 680px; margin-top: 18px; }
+  button.action-btn { flex: 1; padding: 15px; border-radius: 12px; border: none; font-size: 16px; font-weight: 600; cursor: pointer; transition: transform 0.1s; }
+  button.action-btn:active { transform: scale(0.97); }
+  .btn-flip { background: var(--primary); color: #fff; }
+  .btn-again { background: #ffebeb; color: var(--danger); }
+  .btn-pass { background: #e6f9ed; color: var(--success); }
+</style>
+</head>
+<body>
+  <div class="header">
+    <a href="index.html" class="nav-back">‹ 目录</a>
+    <div class="deck-title">7铁系元素29</div>
+    <button class="btn-reset" onclick="resetDeck()">重置本轮</button>
+  </div>
+  <div class="card-box" onclick="flipCard()">
+    <div class="card-inner" id="cardInner">
+      <div class="card-face card-front">
+        <span class="badge">正面 / 题目</span>
+        <span class="prog-tag" id="prog"></span>
+        <img id="fImg" src="" alt="题目">
+      </div>
+      <div class="card-face card-back">
+        <span class="badge">背面 / 答案</span>
+        <img id="bImg" src="" alt="答案">
+      </div>
+    </div>
+  </div>
+  <div class="controls">
+    <button class="action-btn btn-flip" onclick="flipCard()">翻转</button>
+    <button class="action-btn btn-again" onclick="rate(false)">没记住 (重排)</button>
+    <button class="action-btn btn-pass" onclick="rate(true)">记住了 (移出)</button>
+  </div>
+  <script>
+    const deck = [{ id: 1, front: 'images/7铁系元素29_q_1.jpg', back: 'images/7铁系元素29_a_1.jpg' },{ id: 2, front: 'images/7铁系元素29_q_2.jpg', back: 'images/7铁系元素29_a_2.jpg' },{ id: 3, front: 'images/7铁系元素29_q_3.jpg', back: 'images/7铁系元素29_a_3.jpg' },{ id: 4, front: 'images/7铁系元素29_q_4.jpg', back: 'images/7铁系元素29_a_4.jpg' },{ id: 5, front: 'images/7铁系元素29_q_5.jpg', back: 'images/7铁系元素29_a_5.jpg' },{ id: 6, front: 'images/7铁系元素29_q_6.jpg', back: 'images/7铁系元素29_a_6.jpg' },{ id: 7, front: 'images/7铁系元素29_q_7.jpg', back: 'images/7铁系元素29_a_7.jpg' },{ id: 8, front: 'images/7铁系元素29_q_8.jpg', back: 'images/7铁系元素29_a_8.jpg' },{ id: 9, front: 'images/7铁系元素29_q_9.jpg', back: 'images/7铁系元素29_a_9.jpg' },{ id: 10, front: 'images/7铁系元素29_q_10.jpg', back: 'images/7铁系元素29_a_10.jpg' },{ id: 11, front: 'images/7铁系元素29_q_11.jpg', back: 'images/7铁系元素29_a_11.jpg' },{ id: 12, front: 'images/7铁系元素29_q_12.jpg', back: 'images/7铁系元素29_a_12.jpg' },{ id: 13, front: 'images/7铁系元素29_q_13.jpg', back: 'images/7铁系元素29_a_13.jpg' },{ id: 14, front: 'images/7铁系元素29_q_14.jpg', back: 'images/7铁系元素29_a_14.jpg' },{ id: 15, front: 'images/7铁系元素29_q_15.jpg', back: 'images/7铁系元素29_a_15.jpg' },{ id: 16, front: 'images/7铁系元素29_q_16.jpg', back: 'images/7铁系元素29_a_16.jpg' },{ id: 17, front: 'images/7铁系元素29_q_17.jpg', back: 'images/7铁系元素29_a_17.jpg' },{ id: 18, front: 'images/7铁系元素29_q_18.jpg', back: 'images/7铁系元素29_a_18.jpg' },{ id: 19, front: 'images/7铁系元素29_q_19.jpg', back: 'images/7铁系元素29_a_19.jpg' },{ id: 20, front: 'images/7铁系元素29_q_20.jpg', back: 'images/7铁系元素29_a_20.jpg' },{ id: 21, front: 'images/7铁系元素29_q_21.jpg', back: 'images/7铁系元素29_a_21.jpg' },{ id: 22, front: 'images/7铁系元素29_q_22.jpg', back: 'images/7铁系元素29_a_22.jpg' },{ id: 23, front: 'images/7铁系元素29_q_23.jpg', back: 'images/7铁系元素29_a_23.jpg' },{ id: 24, front: 'images/7铁系元素29_q_24.jpg', back: 'images/7铁系元素29_a_24.jpg' },{ id: 25, front: 'images/7铁系元素29_q_25.jpg', back: 'images/7铁系元素29_a_25.jpg' },{ id: 26, front: 'images/7铁系元素29_q_26.jpg', back: 'images/7铁系元素29_a_26.jpg' },{ id: 27, front: 'images/7铁系元素29_q_27.jpg', back: 'images/7铁系元素29_a_27.jpg' },{ id: 28, front: 'images/7铁系元素29_q_28.jpg', back: 'images/7铁系元素29_a_28.jpg' },{ id: 29, front: 'images/7铁系元素29_q_29.jpg', back: 'images/7铁系元素29_a_29.jpg' },{ id: 30, front: 'images/7铁系元素29_q_30.jpg', back: 'images/7铁系元素29_a_30.jpg' }];
+    let queue = [...deck];
+    let isFlipped = false;
+    function update() {
+      isFlipped = false;
+      document.getElementById('cardInner').classList.remove('flipped');
+      if (queue.length === 0) {
+        document.getElementById('prog').innerText = '🎉 已背完！';
+        document.getElementById('fImg').src = '';
+        document.getElementById('bImg').src = '';
+        return;
+      }
+      document.getElementById('prog').innerText = '剩余 ' + queue.length + ' / ' + deck.length;
+      document.getElementById('fImg').src = queue[0].front;
+      document.getElementById('bImg').src = queue[0].back;
+    }
+    function flipCard() {
+      if (queue.length === 0) return;
+      isFlipped = !isFlipped;
+      document.getElementById('cardInner').classList.toggle('flipped', isFlipped);
+    }
+    function rate(pass) {
+      if (queue.length === 0) return;
+      if (pass) { queue.shift(); } else { queue.push(queue.shift()); }
+      update();
+    }
+    function resetDeck() { queue = [...deck]; update(); }
+    update();
+  </script>
+</body>
+</html>
