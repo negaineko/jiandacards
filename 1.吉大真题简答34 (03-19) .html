@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>1.吉大真题简答34（03-19） - 刷题卡</title>
+<style>
+  :root { --bg: #f2f2f7; --card-bg: #fff; --text: #1c1c1e; --primary: #007aff; --danger: #ff3b30; --success: #34c759; }
+  body { margin: 0; padding: 16px; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--text); display: flex; flex-direction: column; align-items: center; min-height: 90vh; user-select: none; }
+  .header { width: 100%; max-width: 680px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+  .nav-back { font-size: 14px; color: var(--primary); text-decoration: none; font-weight: 600; padding: 6px 10px; background: #e5e5ea; border-radius: 8px; }
+  .deck-title { font-size: 15px; font-weight: 600; color: #3a3a3c; max-width: 45%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .btn-reset { padding: 6px 12px; font-size: 13px; background: #e5e5ea; border: none; border-radius: 8px; cursor: pointer; color: #1c1c1e; font-weight: 500; }
+  .card-box { width: 100%; max-width: 680px; min-height: 380px; max-height: 62vh; height: 52vh; perspective: 1200px; cursor: pointer; }
+  .card-inner { width: 100%; height: 100%; position: relative; transform-style: preserve-3d; transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1); border-radius: 18px; box-shadow: 0 10px 25px rgba(0,0,0,0.07); }
+  .card-inner.flipped { transform: rotateY(180deg); }
+  .card-face { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; background: var(--card-bg); border-radius: 18px; display: flex; justify-content: center; align-items: center; padding: 14px; box-sizing: border-box; overflow: hidden; }
+  .card-back { transform: rotateY(180deg); background: #fafbfc; }
+  .card-face img { max-width: 100%; max-height: 100%; object-fit: contain; pointer-events: none; }
+  .badge { position: absolute; top: 12px; left: 16px; font-size: 11px; font-weight: 700; color: #aeaeb2; letter-spacing: 0.5px; }
+  .prog-tag { position: absolute; top: 12px; right: 16px; font-size: 12px; color: #8e8e93; font-weight: 600; }
+  .controls { display: flex; gap: 12px; width: 100%; max-width: 680px; margin-top: 18px; }
+  button.action-btn { flex: 1; padding: 15px; border-radius: 12px; border: none; font-size: 16px; font-weight: 600; cursor: pointer; transition: transform 0.1s; }
+  button.action-btn:active { transform: scale(0.97); }
+  .btn-flip { background: var(--primary); color: #fff; }
+  .btn-again { background: #ffebeb; color: var(--danger); }
+  .btn-pass { background: #e6f9ed; color: var(--success); }
+</style>
+</head>
+<body>
+  <div class="header">
+    <a href="index.html" class="nav-back">‹ 目录</a>
+    <div class="deck-title">1.吉大真题简答34（03-19）</div>
+    <button class="btn-reset" onclick="resetDeck()">重置本轮</button>
+  </div>
+  <div class="card-box" onclick="flipCard()">
+    <div class="card-inner" id="cardInner">
+      <div class="card-face card-front">
+        <span class="badge">正面 / 题目</span>
+        <span class="prog-tag" id="prog"></span>
+        <img id="fImg" src="" alt="题目">
+      </div>
+      <div class="card-face card-back">
+        <span class="badge">背面 / 答案</span>
+        <img id="bImg" src="" alt="答案">
+      </div>
+    </div>
+  </div>
+  <div class="controls">
+    <button class="action-btn btn-flip" onclick="flipCard()">翻转</button>
+    <button class="action-btn btn-again" onclick="rate(false)">没记住 (重排)</button>
+    <button class="action-btn btn-pass" onclick="rate(true)">记住了 (移出)</button>
+  </div>
+  <script>
+    const deck = [{"id": 1, "front": "images/1_吉大真题简答34_03_19__000.jpg", "back": "images/1_吉大真题简答34_03_19__001.jpg"}, {"id": 2, "front": "images/1_吉大真题简答34_03_19__002.jpg", "back": "images/1_吉大真题简答34_03_19__003.jpg"}, {"id": 3, "front": "images/1_吉大真题简答34_03_19__004.jpg", "back": "images/1_吉大真题简答34_03_19__005.jpg"}, {"id": 4, "front": "images/1_吉大真题简答34_03_19__006.jpg", "back": "images/1_吉大真题简答34_03_19__007.jpg"}, {"id": 5, "front": "images/1_吉大真题简答34_03_19__008.jpg", "back": "images/1_吉大真题简答34_03_19__009.jpg"}, {"id": 6, "front": "images/1_吉大真题简答34_03_19__010.jpg", "back": "images/1_吉大真题简答34_03_19__011.jpg"}, {"id": 7, "front": "images/1_吉大真题简答34_03_19__012.jpg", "back": "images/1_吉大真题简答34_03_19__013.jpg"}, {"id": 8, "front": "images/1_吉大真题简答34_03_19__014.jpg", "back": "images/1_吉大真题简答34_03_19__015.jpg"}, {"id": 9, "front": "images/1_吉大真题简答34_03_19__016.jpg", "back": "images/1_吉大真题简答34_03_19__017.jpg"}, {"id": 10, "front": "images/1_吉大真题简答34_03_19__018.jpg", "back": "images/1_吉大真题简答34_03_19__019.jpg"}, {"id": 11, "front": "images/1_吉大真题简答34_03_19__020.jpg", "back": "images/1_吉大真题简答34_03_19__021.jpg"}, {"id": 12, "front": "images/1_吉大真题简答34_03_19__022.jpg", "back": "images/1_吉大真题简答34_03_19__023.jpg"}, {"id": 13, "front": "images/1_吉大真题简答34_03_19__024.jpg", "back": "images/1_吉大真题简答34_03_19__025.jpg"}, {"id": 14, "front": "images/1_吉大真题简答34_03_19__026.jpg", "back": "images/1_吉大真题简答34_03_19__027.jpg"}, {"id": 15, "front": "images/1_吉大真题简答34_03_19__028.jpg", "back": "images/1_吉大真题简答34_03_19__029.jpg"}, {"id": 16, "front": "images/1_吉大真题简答34_03_19__030.jpg", "back": "images/1_吉大真题简答34_03_19__031.jpg"}, {"id": 17, "front": "images/1_吉大真题简答34_03_19__032.jpg", "back": "images/1_吉大真题简答34_03_19__033.jpg"}, {"id": 18, "front": "images/1_吉大真题简答34_03_19__034.jpg", "back": "images/1_吉大真题简答34_03_19__035.jpg"}, {"id": 19, "front": "images/1_吉大真题简答34_03_19__036.jpg", "back": "images/1_吉大真题简答34_03_19__037.jpg"}, {"id": 20, "front": "images/1_吉大真题简答34_03_19__038.jpg", "back": "images/1_吉大真题简答34_03_19__039.jpg"}, {"id": 21, "front": "images/1_吉大真题简答34_03_19__040.jpg", "back": "images/1_吉大真题简答34_03_19__041.jpg"}, {"id": 22, "front": "images/1_吉大真题简答34_03_19__042.jpg", "back": "images/1_吉大真题简答34_03_19__043.jpg"}, {"id": 23, "front": "images/1_吉大真题简答34_03_19__044.jpg", "back": "images/1_吉大真题简答34_03_19__045.jpg"}, {"id": 24, "front": "images/1_吉大真题简答34_03_19__046.jpg", "back": "images/1_吉大真题简答34_03_19__047.jpg"}, {"id": 25, "front": "images/1_吉大真题简答34_03_19__048.jpg", "back": "images/1_吉大真题简答34_03_19__049.jpg"}, {"id": 26, "front": "images/1_吉大真题简答34_03_19__050.jpg", "back": "images/1_吉大真题简答34_03_19__051.jpg"}, {"id": 27, "front": "images/1_吉大真题简答34_03_19__052.jpg", "back": "images/1_吉大真题简答34_03_19__053.jpg"}, {"id": 28, "front": "images/1_吉大真题简答34_03_19__054.jpg", "back": "images/1_吉大真题简答34_03_19__055.jpg"}, {"id": 29, "front": "images/1_吉大真题简答34_03_19__056.jpg", "back": "images/1_吉大真题简答34_03_19__057.jpg"}, {"id": 30, "front": "images/1_吉大真题简答34_03_19__058.jpg", "back": "images/1_吉大真题简答34_03_19__059.jpg"}, {"id": 31, "front": "images/1_吉大真题简答34_03_19__060.jpg", "back": "images/1_吉大真题简答34_03_19__061.jpg"}, {"id": 32, "front": "images/1_吉大真题简答34_03_19__062.jpg", "back": "images/1_吉大真题简答34_03_19__063.jpg"}, {"id": 33, "front": "images/1_吉大真题简答34_03_19__064.jpg", "back": "images/1_吉大真题简答34_03_19__065.jpg"}, {"id": 34, "front": "images/1_吉大真题简答34_03_19__066.jpg", "back": "images/1_吉大真题简答34_03_19__067.jpg"}, {"id": 35, "front": "images/1_吉大真题简答34_03_19__068.jpg", "back": "images/1_吉大真题简答34_03_19__069.jpg"}, {"id": 36, "front": "images/1_吉大真题简答34_03_19__070.jpg", "back": "images/1_吉大真题简答34_03_19__071.jpg"}, {"id": 37, "front": "images/1_吉大真题简答34_03_19__072.jpg", "back": "images/1_吉大真题简答34_03_19__073.jpg"}, {"id": 38, "front": "images/1_吉大真题简答34_03_19__074.jpg", "back": "images/1_吉大真题简答34_03_19__075.jpg"}, {"id": 39, "front": "images/1_吉大真题简答34_03_19__076.jpg", "back": "images/1_吉大真题简答34_03_19__077.jpg"}, {"id": 40, "front": "images/1_吉大真题简答34_03_19__078.jpg", "back": "images/1_吉大真题简答34_03_19__079.jpg"}, {"id": 41, "front": "images/1_吉大真题简答34_03_19__080.jpg", "back": "images/1_吉大真题简答34_03_19__081.jpg"}, {"id": 42, "front": "images/1_吉大真题简答34_03_19__082.jpg", "back": "images/1_吉大真题简答34_03_19__083.jpg"}, {"id": 43, "front": "images/1_吉大真题简答34_03_19__084.jpg", "back": "images/1_吉大真题简答34_03_19__085.jpg"}, {"id": 44, "front": "images/1_吉大真题简答34_03_19__086.jpg", "back": "images/1_吉大真题简答34_03_19__087.jpg"}, {"id": 45, "front": "images/1_吉大真题简答34_03_19__088.jpg", "back": "images/1_吉大真题简答34_03_19__089.jpg"}, {"id": 46, "front": "images/1_吉大真题简答34_03_19__090.jpg", "back": "images/1_吉大真题简答34_03_19__091.jpg"}, {"id": 47, "front": "images/1_吉大真题简答34_03_19__092.jpg", "back": "images/1_吉大真题简答34_03_19__093.jpg"}, {"id": 48, "front": "images/1_吉大真题简答34_03_19__094.jpg", "back": "images/1_吉大真题简答34_03_19__095.jpg"}, {"id": 49, "front": "images/1_吉大真题简答34_03_19__096.jpg", "back": "images/1_吉大真题简答34_03_19__097.jpg"}, {"id": 50, "front": "images/1_吉大真题简答34_03_19__098.jpg", "back": "images/1_吉大真题简答34_03_19__099.jpg"}, {"id": 51, "front": "images/1_吉大真题简答34_03_19__100.jpg", "back": "images/1_吉大真题简答34_03_19__101.jpg"}, {"id": 52, "front": "images/1_吉大真题简答34_03_19__102.jpg", "back": "images/1_吉大真题简答34_03_19__103.jpg"}, {"id": 53, "front": "images/1_吉大真题简答34_03_19__104.jpg", "back": "images/1_吉大真题简答34_03_19__105.jpg"}, {"id": 54, "front": "images/1_吉大真题简答34_03_19__106.jpg", "back": "images/1_吉大真题简答34_03_19__107.jpg"}, {"id": 55, "front": "images/1_吉大真题简答34_03_19__108.jpg", "back": "images/1_吉大真题简答34_03_19__109.jpg"}, {"id": 56, "front": "images/1_吉大真题简答34_03_19__110.jpg", "back": "images/1_吉大真题简答34_03_19__111.jpg"}, {"id": 57, "front": "images/1_吉大真题简答34_03_19__112.jpg", "back": "images/1_吉大真题简答34_03_19__113.jpg"}, {"id": 58, "front": "images/1_吉大真题简答34_03_19__114.jpg", "back": "images/1_吉大真题简答34_03_19__115.jpg"}, {"id": 59, "front": "images/1_吉大真题简答34_03_19__116.jpg", "back": "images/1_吉大真题简答34_03_19__117.jpg"}, {"id": 60, "front": "images/1_吉大真题简答34_03_19__118.jpg", "back": "images/1_吉大真题简答34_03_19__119.jpg"}, {"id": 61, "front": "images/1_吉大真题简答34_03_19__120.jpg", "back": "images/1_吉大真题简答34_03_19__121.jpg"}, {"id": 62, "front": "images/1_吉大真题简答34_03_19__122.jpg", "back": "images/1_吉大真题简答34_03_19__123.jpg"}, {"id": 63, "front": "images/1_吉大真题简答34_03_19__124.jpg", "back": "images/1_吉大真题简答34_03_19__125.jpg"}, {"id": 64, "front": "images/1_吉大真题简答34_03_19__126.jpg", "back": "images/1_吉大真题简答34_03_19__127.jpg"}, {"id": 65, "front": "images/1_吉大真题简答34_03_19__128.jpg", "back": "images/1_吉大真题简答34_03_19__129.jpg"}, {"id": 66, "front": "images/1_吉大真题简答34_03_19__130.jpg", "back": "images/1_吉大真题简答34_03_19__131.jpg"}, {"id": 67, "front": "images/1_吉大真题简答34_03_19__132.jpg", "back": "images/1_吉大真题简答34_03_19__133.jpg"}, {"id": 68, "front": "images/1_吉大真题简答34_03_19__134.jpg", "back": "images/1_吉大真题简答34_03_19__135.jpg"}, {"id": 69, "front": "images/1_吉大真题简答34_03_19__136.jpg", "back": "images/1_吉大真题简答34_03_19__137.jpg"}];
+    let queue = [...deck];
+    let isFlipped = false;
+    function update() {
+      isFlipped = false;
+      document.getElementById('cardInner').classList.remove('flipped');
+      if (queue.length === 0) {
+        document.getElementById('prog').innerText = '🎉 已背完！';
+        document.getElementById('fImg').src = '';
+        document.getElementById('bImg').src = '';
+        return;
+      }
+      document.getElementById('prog').innerText = '剩余 ' + queue.length + ' / ' + deck.length;
+      document.getElementById('fImg').src = queue[0].front;
+      document.getElementById('bImg').src = queue[0].back;
+    }
+    function flipCard() {
+      if (queue.length === 0) return;
+      isFlipped = !isFlipped;
+      document.getElementById('cardInner').classList.toggle('flipped', isFlipped);
+    }
+    function rate(pass) {
+      if (queue.length === 0) return;
+      if (pass) { queue.shift(); } else { queue.push(queue.shift()); }
+      update();
+    }
+    function resetDeck() { queue = [...deck]; update(); }
+    update();
+  </script>
+</body>
+</html>

@@ -1,85 +1,85 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>推断合集103</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>推断合集103 - 刷题卡</title>
 <style>
-  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-  body { margin: 0; padding: env(safe-area-inset-top) 16px env(safe-area-inset-bottom); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f2f2f7; display: flex; flex-direction: column; height: 100vh; }
-  .header { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; font-size: 15px; font-weight: 600; color: #1c1c1e; }
-  .btn-link { color: #007aff; text-decoration: none; cursor: pointer; }
-  .card-container { flex: 1; position: relative; margin-bottom: 16px; perspective: 1000px; }
-  .card { width: 100%; height: 100%; background: #fff; border-radius: 18px; box-shadow: 0 4px 16px rgba(0,0,0,0.06); display: flex; flex-direction: column; overflow: hidden; padding: 16px; cursor: pointer; }
-  .badge { align-self: flex-start; font-size: 12px; font-weight: 600; padding: 4px 8px; border-radius: 6px; margin-bottom: 10px; }
-  .front-badge { background: #f2f2f7; color: #8e8e93; }
-  .back-badge { background: #e8f5e9; color: #2e7d32; }
-  .img-box { flex: 1; display: flex; align-items: center; justify-content: center; overflow: hidden; }
-  .img-box img { max-width: 100%; max-height: 100%; object-fit: contain; }
-  .actions { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 10px; height: 50px; }
-  .btn { border: none; border-radius: 12px; font-size: 15px; font-weight: 600; cursor: pointer; }
-  .btn-flip { background: #007aff; color: #fff; }
-  .btn-fail { background: #ffebee; color: #c62828; }
-  .btn-pass { background: #e8f5e9; color: #2e7d32; }
+  :root { --bg: #f2f2f7; --card-bg: #fff; --text: #1c1c1e; --primary: #007aff; --danger: #ff3b30; --success: #34c759; }
+  body { margin: 0; padding: 16px; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--text); display: flex; flex-direction: column; align-items: center; min-height: 90vh; user-select: none; }
+  .header { width: 100%; max-width: 680px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+  .nav-back { font-size: 14px; color: var(--primary); text-decoration: none; font-weight: 600; padding: 6px 10px; background: #e5e5ea; border-radius: 8px; }
+  .deck-title { font-size: 15px; font-weight: 600; color: #3a3a3c; max-width: 45%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .btn-reset { padding: 6px 12px; font-size: 13px; background: #e5e5ea; border: none; border-radius: 8px; cursor: pointer; color: #1c1c1e; font-weight: 500; }
+  .card-box { width: 100%; max-width: 680px; min-height: 380px; max-height: 62vh; height: 52vh; perspective: 1200px; cursor: pointer; }
+  .card-inner { width: 100%; height: 100%; position: relative; transform-style: preserve-3d; transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1); border-radius: 18px; box-shadow: 0 10px 25px rgba(0,0,0,0.07); }
+  .card-inner.flipped { transform: rotateY(180deg); }
+  .card-face { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; background: var(--card-bg); border-radius: 18px; display: flex; justify-content: center; align-items: center; padding: 14px; box-sizing: border-box; overflow: hidden; }
+  .card-back { transform: rotateY(180deg); background: #fafbfc; }
+  .card-face img { max-width: 100%; max-height: 100%; object-fit: contain; pointer-events: none; }
+  .badge { position: absolute; top: 12px; left: 16px; font-size: 11px; font-weight: 700; color: #aeaeb2; letter-spacing: 0.5px; }
+  .prog-tag { position: absolute; top: 12px; right: 16px; font-size: 12px; color: #8e8e93; font-weight: 600; }
+  .controls { display: flex; gap: 12px; width: 100%; max-width: 680px; margin-top: 18px; }
+  button.action-btn { flex: 1; padding: 15px; border-radius: 12px; border: none; font-size: 16px; font-weight: 600; cursor: pointer; transition: transform 0.1s; }
+  button.action-btn:active { transform: scale(0.97); }
+  .btn-flip { background: var(--primary); color: #fff; }
+  .btn-again { background: #ffebeb; color: var(--danger); }
+  .btn-pass { background: #e6f9ed; color: var(--success); }
 </style>
 </head>
 <body>
   <div class="header">
-    <a href="index.html" class="btn-link">‹ 目录</a>
-    <span>推断合集103</span>
-    <span id="counter">剩余 0/0</span>
+    <a href="index.html" class="nav-back">‹ 目录</a>
+    <div class="deck-title">推断合集103</div>
+    <button class="btn-reset" onclick="resetDeck()">重置本轮</button>
   </div>
-  <div class="card-container" onclick="flipCard()">
-    <div class="card">
-      <div id="sideTag" class="badge front-badge">正面 / 题目</div>
-      <div class="img-box">
-        <img id="cardImg" src="" alt="卡片内容">
+  <div class="card-box" onclick="flipCard()">
+    <div class="card-inner" id="cardInner">
+      <div class="card-face card-front">
+        <span class="badge">正面 / 题目</span>
+        <span class="prog-tag" id="prog"></span>
+        <img id="fImg" src="" alt="题目">
+      </div>
+      <div class="card-face card-back">
+        <span class="badge">背面 / 答案</span>
+        <img id="bImg" src="" alt="答案">
       </div>
     </div>
   </div>
-  <div class="actions">
-    <button class="btn btn-flip" onclick="flipCard()">翻转</button>
-    <button class="btn btn-fail" onclick="nextCard(false)">没记住 (重排)</button>
-    <button class="btn btn-pass" onclick="nextCard(true)">记住了 (移出)</button>
+  <div class="controls">
+    <button class="action-btn btn-flip" onclick="flipCard()">翻转</button>
+    <button class="action-btn btn-again" onclick="rate(false)">没记住 (重排)</button>
+    <button class="action-btn btn-pass" onclick="rate(true)">记住了 (移出)</button>
   </div>
-
-<script>
-const rawCards = [{"id": 1, "front": "images/推断合集103/card_0000.jpg", "back": "images/推断合集103/card_0001.jpg"}, {"id": 2, "front": "images/推断合集103/card_0002.jpg", "back": "images/推断合集103/card_0003.jpg"}, {"id": 3, "front": "images/推断合集103/card_0004.jpg", "back": "images/推断合集103/card_0005.jpg"}, {"id": 4, "front": "images/推断合集103/card_0006.jpg", "back": "images/推断合集103/card_0007.jpg"}, {"id": 5, "front": "images/推断合集103/card_0008.jpg", "back": "images/推断合集103/card_0009.jpg"}, {"id": 6, "front": "images/推断合集103/card_0010.jpg", "back": "images/推断合集103/card_0011.jpg"}, {"id": 7, "front": "images/推断合集103/card_0012.jpg", "back": "images/推断合集103/card_0013.jpg"}, {"id": 8, "front": "images/推断合集103/card_0014.jpg", "back": "images/推断合集103/card_0015.jpg"}, {"id": 9, "front": "images/推断合集103/card_0016.jpg", "back": "images/推断合集103/card_0017.jpg"}, {"id": 10, "front": "images/推断合集103/card_0018.jpg", "back": "images/推断合集103/card_0019.jpg"}, {"id": 11, "front": "images/推断合集103/card_0020.jpg", "back": "images/推断合集103/card_0021.jpg"}, {"id": 12, "front": "images/推断合集103/card_0022.jpg", "back": "images/推断合集103/card_0023.jpg"}, {"id": 13, "front": "images/推断合集103/card_0024.jpg", "back": "images/推断合集103/card_0025.jpg"}, {"id": 14, "front": "images/推断合集103/card_0026.jpg", "back": "images/推断合集103/card_0027.jpg"}, {"id": 15, "front": "images/推断合集103/card_0028.jpg", "back": "images/推断合集103/card_0029.jpg"}, {"id": 16, "front": "images/推断合集103/card_0030.jpg", "back": "images/推断合集103/card_0031.jpg"}, {"id": 17, "front": "images/推断合集103/card_0032.jpg", "back": "images/推断合集103/card_0033.jpg"}, {"id": 18, "front": "images/推断合集103/card_0034.jpg", "back": "images/推断合集103/card_0035.jpg"}, {"id": 19, "front": "images/推断合集103/card_0036.jpg", "back": "images/推断合集103/card_0037.jpg"}, {"id": 20, "front": "images/推断合集103/card_0038.jpg", "back": "images/推断合集103/card_0039.jpg"}, {"id": 21, "front": "images/推断合集103/card_0040.jpg", "back": "images/推断合集103/card_0041.jpg"}, {"id": 22, "front": "images/推断合集103/card_0042.jpg", "back": "images/推断合集103/card_0043.jpg"}, {"id": 23, "front": "images/推断合集103/card_0044.jpg", "back": "images/推断合集103/card_0045.jpg"}, {"id": 24, "front": "images/推断合集103/card_0046.jpg", "back": "images/推断合集103/card_0047.jpg"}, {"id": 25, "front": "images/推断合集103/card_0048.jpg", "back": "images/推断合集103/card_0049.jpg"}, {"id": 26, "front": "images/推断合集103/card_0050.jpg", "back": "images/推断合集103/card_0051.jpg"}, {"id": 27, "front": "images/推断合集103/card_0052.jpg", "back": "images/推断合集103/card_0053.jpg"}, {"id": 28, "front": "images/推断合集103/card_0054.jpg", "back": "images/推断合集103/card_0055.jpg"}, {"id": 29, "front": "images/推断合集103/card_0056.jpg", "back": "images/推断合集103/card_0057.jpg"}, {"id": 30, "front": "images/推断合集103/card_0058.jpg", "back": "images/推断合集103/card_0059.jpg"}, {"id": 31, "front": "images/推断合集103/card_0060.jpg", "back": "images/推断合集103/card_0061.jpg"}, {"id": 32, "front": "images/推断合集103/card_0062.jpg", "back": "images/推断合集103/card_0063.jpg"}, {"id": 33, "front": "images/推断合集103/card_0064.jpg", "back": "images/推断合集103/card_0065.jpg"}, {"id": 34, "front": "images/推断合集103/card_0066.jpg", "back": "images/推断合集103/card_0067.jpg"}, {"id": 35, "front": "images/推断合集103/card_0068.jpg", "back": "images/推断合集103/card_0069.jpg"}, {"id": 36, "front": "images/推断合集103/card_0070.jpg", "back": "images/推断合集103/card_0071.jpg"}, {"id": 37, "front": "images/推断合集103/card_0072.jpg", "back": "images/推断合集103/card_0073.jpg"}, {"id": 38, "front": "images/推断合集103/card_0074.jpg", "back": "images/推断合集103/card_0075.jpg"}, {"id": 39, "front": "images/推断合集103/card_0076.jpg", "back": "images/推断合集103/card_0077.jpg"}, {"id": 40, "front": "images/推断合集103/card_0078.jpg", "back": "images/推断合集103/card_0079.jpg"}, {"id": 41, "front": "images/推断合集103/card_0080.jpg", "back": "images/推断合集103/card_0081.jpg"}, {"id": 42, "front": "images/推断合集103/card_0082.jpg", "back": "images/推断合集103/card_0083.jpg"}, {"id": 43, "front": "images/推断合集103/card_0084.jpg", "back": "images/推断合集103/card_0085.jpg"}, {"id": 44, "front": "images/推断合集103/card_0086.jpg", "back": "images/推断合集103/card_0087.jpg"}, {"id": 45, "front": "images/推断合集103/card_0088.jpg", "back": "images/推断合集103/card_0089.jpg"}, {"id": 46, "front": "images/推断合集103/card_0090.jpg", "back": "images/推断合集103/card_0091.jpg"}, {"id": 47, "front": "images/推断合集103/card_0092.jpg", "back": "images/推断合集103/card_0093.jpg"}, {"id": 48, "front": "images/推断合集103/card_0094.jpg", "back": "images/推断合集103/card_0095.jpg"}, {"id": 49, "front": "images/推断合集103/card_0096.jpg", "back": "images/推断合集103/card_0097.jpg"}, {"id": 50, "front": "images/推断合集103/card_0098.jpg", "back": "images/推断合集103/card_0099.jpg"}, {"id": 51, "front": "images/推断合集103/card_0100.jpg", "back": "images/推断合集103/card_0101.jpg"}, {"id": 52, "front": "images/推断合集103/card_0102.jpg", "back": "images/推断合集103/card_0103.jpg"}, {"id": 53, "front": "images/推断合集103/card_0104.jpg", "back": "images/推断合集103/card_0105.jpg"}, {"id": 54, "front": "images/推断合集103/card_0106.jpg", "back": "images/推断合集103/card_0107.jpg"}, {"id": 55, "front": "images/推断合集103/card_0108.jpg", "back": "images/推断合集103/card_0109.jpg"}, {"id": 56, "front": "images/推断合集103/card_0110.jpg", "back": "images/推断合集103/card_0111.jpg"}, {"id": 57, "front": "images/推断合集103/card_0112.jpg", "back": "images/推断合集103/card_0113.jpg"}, {"id": 58, "front": "images/推断合集103/card_0114.jpg", "back": "images/推断合集103/card_0115.jpg"}, {"id": 59, "front": "images/推断合集103/card_0116.jpg", "back": "images/推断合集103/card_0117.jpg"}, {"id": 60, "front": "images/推断合集103/card_0118.jpg", "back": "images/推断合集103/card_0119.jpg"}, {"id": 61, "front": "images/推断合集103/card_0120.jpg", "back": "images/推断合集103/card_0121.jpg"}, {"id": 62, "front": "images/推断合集103/card_0122.jpg", "back": "images/推断合集103/card_0123.jpg"}, {"id": 63, "front": "images/推断合集103/card_0124.jpg", "back": "images/推断合集103/card_0125.jpg"}, {"id": 64, "front": "images/推断合集103/card_0126.jpg", "back": "images/推断合集103/card_0127.jpg"}, {"id": 65, "front": "images/推断合集103/card_0128.jpg", "back": "images/推断合集103/card_0129.jpg"}, {"id": 66, "front": "images/推断合集103/card_0130.jpg", "back": "images/推断合集103/card_0131.jpg"}, {"id": 67, "front": "images/推断合集103/card_0132.jpg", "back": "images/推断合集103/card_0133.jpg"}, {"id": 68, "front": "images/推断合集103/card_0134.jpg", "back": "images/推断合集103/card_0135.jpg"}, {"id": 69, "front": "images/推断合集103/card_0136.jpg", "back": "images/推断合集103/card_0137.jpg"}, {"id": 70, "front": "images/推断合集103/card_0138.jpg", "back": "images/推断合集103/card_0139.jpg"}, {"id": 71, "front": "images/推断合集103/card_0140.jpg", "back": "images/推断合集103/card_0141.jpg"}, {"id": 72, "front": "images/推断合集103/card_0142.jpg", "back": "images/推断合集103/card_0143.jpg"}, {"id": 73, "front": "images/推断合集103/card_0144.jpg", "back": "images/推断合集103/card_0145.jpg"}, {"id": 74, "front": "images/推断合集103/card_0146.jpg", "back": "images/推断合集103/card_0147.jpg"}, {"id": 75, "front": "images/推断合集103/card_0148.jpg", "back": "images/推断合集103/card_0149.jpg"}, {"id": 76, "front": "images/推断合集103/card_0150.jpg", "back": "images/推断合集103/card_0151.jpg"}, {"id": 77, "front": "images/推断合集103/card_0152.jpg", "back": "images/推断合集103/card_0153.jpg"}, {"id": 78, "front": "images/推断合集103/card_0154.jpg", "back": "images/推断合集103/card_0155.jpg"}, {"id": 79, "front": "images/推断合集103/card_0156.jpg", "back": "images/推断合集103/card_0157.jpg"}, {"id": 80, "front": "images/推断合集103/card_0158.jpg", "back": "images/推断合集103/card_0159.jpg"}, {"id": 81, "front": "images/推断合集103/card_0160.jpg", "back": "images/推断合集103/card_0161.jpg"}, {"id": 82, "front": "images/推断合集103/card_0162.jpg", "back": "images/推断合集103/card_0163.jpg"}, {"id": 83, "front": "images/推断合集103/card_0164.jpg", "back": "images/推断合集103/card_0165.jpg"}, {"id": 84, "front": "images/推断合集103/card_0166.jpg", "back": "images/推断合集103/card_0167.jpg"}, {"id": 85, "front": "images/推断合集103/card_0168.jpg", "back": "images/推断合集103/card_0169.jpg"}, {"id": 86, "front": "images/推断合集103/card_0170.jpg", "back": "images/推断合集103/card_0171.jpg"}, {"id": 87, "front": "images/推断合集103/card_0172.jpg", "back": "images/推断合集103/card_0173.jpg"}, {"id": 88, "front": "images/推断合集103/card_0174.jpg", "back": "images/推断合集103/card_0175.jpg"}, {"id": 89, "front": "images/推断合集103/card_0176.jpg", "back": "images/推断合集103/card_0177.jpg"}, {"id": 90, "front": "images/推断合集103/card_0178.jpg", "back": "images/推断合集103/card_0179.jpg"}, {"id": 91, "front": "images/推断合集103/card_0180.jpg", "back": "images/推断合集103/card_0181.jpg"}, {"id": 92, "front": "images/推断合集103/card_0182.jpg", "back": "images/推断合集103/card_0183.jpg"}, {"id": 93, "front": "images/推断合集103/card_0184.jpg", "back": "images/推断合集103/card_0185.jpg"}, {"id": 94, "front": "images/推断合集103/card_0186.jpg", "back": "images/推断合集103/card_0187.jpg"}, {"id": 95, "front": "images/推断合集103/card_0188.jpg", "back": "images/推断合集103/card_0189.jpg"}, {"id": 96, "front": "images/推断合集103/card_0190.jpg", "back": "images/推断合集103/card_0191.jpg"}, {"id": 97, "front": "images/推断合集103/card_0192.jpg", "back": "images/推断合集103/card_0193.jpg"}, {"id": 98, "front": "images/推断合集103/card_0194.jpg", "back": "images/推断合集103/card_0195.jpg"}, {"id": 99, "front": "images/推断合集103/card_0196.jpg", "back": "images/推断合集103/card_0197.jpg"}, {"id": 100, "front": "images/推断合集103/card_0198.jpg", "back": "images/推断合集103/card_0199.jpg"}, {"id": 101, "front": "images/推断合集103/card_0200.jpg", "back": "images/推断合集103/card_0201.jpg"}, {"id": 102, "front": "images/推断合集103/card_0202.jpg", "back": "images/推断合集103/card_0203.jpg"}, {"id": 103, "front": "images/推断合集103/card_0204.jpg", "back": "images/推断合集103/card_0205.jpg"}, {"id": 104, "front": "images/推断合集103/card_0206.jpg", "back": "images/推断合集103/card_0207.jpg"}, {"id": 105, "front": "images/推断合集103/card_0208.jpg", "back": "images/推断合集103/card_0209.jpg"}, {"id": 106, "front": "images/推断合集103/card_0210.jpg", "back": "images/推断合集103/card_0211.jpg"}, {"id": 107, "front": "images/推断合集103/card_0212.jpg", "back": "images/推断合集103/card_0213.jpg"}, {"id": 108, "front": "images/推断合集103/card_0214.jpg", "back": "images/推断合集103/card_0215.jpg"}, {"id": 109, "front": "images/推断合集103/card_0216.jpg", "back": "images/推断合集103/card_0217.jpg"}, {"id": 110, "front": "images/推断合集103/card_0218.jpg", "back": "images/推断合集103/card_0219.jpg"}];
-let queue = [...rawCards];
-let currentCard = null;
-let isFront = true;
-
-function updateCard() {
-  if (queue.length === 0) {
-    document.getElementById('counter').innerText = '已全部掌握！';
-    document.getElementById('cardImg').src = '';
-    document.getElementById('sideTag').innerText = '🎉 恭喜完成！';
-    return;
-  }
-  currentCard = queue[0];
-  isFront = true;
-  document.getElementById('counter').innerText = '剩余 ' + queue.length + ' / ' + rawCards.length;
-  document.getElementById('sideTag').innerText = '正面 / 题目';
-  document.getElementById('sideTag').className = 'badge front-badge';
-  document.getElementById('cardImg').src = currentCard.front;
-}
-
-function flipCard() {
-  if (!currentCard) return;
-  isFront = !isFront;
-  document.getElementById('sideTag').innerText = isFront ? '正面 / 题目' : '背面 / 答案';
-  document.getElementById('sideTag').className = isFront ? 'badge front-badge' : 'badge back-badge';
-  document.getElementById('cardImg').src = isFront ? currentCard.front : currentCard.back;
-}
-
-function nextCard(passed) {
-  if (queue.length === 0) return;
-  const card = queue.shift();
-  if (!passed) queue.push(card);
-  updateCard();
-}
-
-updateCard();
-</script>
+  <script>
+    const deck = [{"id": 1, "front": "images/推断合集103_000.jpg", "back": "images/推断合集103_001.jpg"}, {"id": 2, "front": "images/推断合集103_002.jpg", "back": "images/推断合集103_003.jpg"}, {"id": 3, "front": "images/推断合集103_004.jpg", "back": "images/推断合集103_005.jpg"}, {"id": 4, "front": "images/推断合集103_006.jpg", "back": "images/推断合集103_007.jpg"}, {"id": 5, "front": "images/推断合集103_008.jpg", "back": "images/推断合集103_009.jpg"}, {"id": 6, "front": "images/推断合集103_010.jpg", "back": "images/推断合集103_011.jpg"}, {"id": 7, "front": "images/推断合集103_012.jpg", "back": "images/推断合集103_013.jpg"}, {"id": 8, "front": "images/推断合集103_014.jpg", "back": "images/推断合集103_015.jpg"}, {"id": 9, "front": "images/推断合集103_016.jpg", "back": "images/推断合集103_017.jpg"}, {"id": 10, "front": "images/推断合集103_018.jpg", "back": "images/推断合集103_019.jpg"}, {"id": 11, "front": "images/推断合集103_020.jpg", "back": "images/推断合集103_021.jpg"}, {"id": 12, "front": "images/推断合集103_022.jpg", "back": "images/推断合集103_023.jpg"}, {"id": 13, "front": "images/推断合集103_024.jpg", "back": "images/推断合集103_025.jpg"}, {"id": 14, "front": "images/推断合集103_026.jpg", "back": "images/推断合集103_027.jpg"}, {"id": 15, "front": "images/推断合集103_028.jpg", "back": "images/推断合集103_029.jpg"}, {"id": 16, "front": "images/推断合集103_030.jpg", "back": "images/推断合集103_031.jpg"}, {"id": 17, "front": "images/推断合集103_032.jpg", "back": "images/推断合集103_033.jpg"}, {"id": 18, "front": "images/推断合集103_034.jpg", "back": "images/推断合集103_035.jpg"}, {"id": 19, "front": "images/推断合集103_036.jpg", "back": "images/推断合集103_037.jpg"}, {"id": 20, "front": "images/推断合集103_038.jpg", "back": "images/推断合集103_039.jpg"}, {"id": 21, "front": "images/推断合集103_040.jpg", "back": "images/推断合集103_041.jpg"}, {"id": 22, "front": "images/推断合集103_042.jpg", "back": "images/推断合集103_043.jpg"}, {"id": 23, "front": "images/推断合集103_044.jpg", "back": "images/推断合集103_045.jpg"}, {"id": 24, "front": "images/推断合集103_046.jpg", "back": "images/推断合集103_047.jpg"}, {"id": 25, "front": "images/推断合集103_048.jpg", "back": "images/推断合集103_049.jpg"}, {"id": 26, "front": "images/推断合集103_050.jpg", "back": "images/推断合集103_051.jpg"}, {"id": 27, "front": "images/推断合集103_052.jpg", "back": "images/推断合集103_053.jpg"}, {"id": 28, "front": "images/推断合集103_054.jpg", "back": "images/推断合集103_055.jpg"}, {"id": 29, "front": "images/推断合集103_056.jpg", "back": "images/推断合集103_057.jpg"}, {"id": 30, "front": "images/推断合集103_058.jpg", "back": "images/推断合集103_059.jpg"}, {"id": 31, "front": "images/推断合集103_060.jpg", "back": "images/推断合集103_061.jpg"}, {"id": 32, "front": "images/推断合集103_062.jpg", "back": "images/推断合集103_063.jpg"}, {"id": 33, "front": "images/推断合集103_064.jpg", "back": "images/推断合集103_065.jpg"}, {"id": 34, "front": "images/推断合集103_066.jpg", "back": "images/推断合集103_067.jpg"}, {"id": 35, "front": "images/推断合集103_068.jpg", "back": "images/推断合集103_069.jpg"}, {"id": 36, "front": "images/推断合集103_070.jpg", "back": "images/推断合集103_071.jpg"}, {"id": 37, "front": "images/推断合集103_072.jpg", "back": "images/推断合集103_073.jpg"}, {"id": 38, "front": "images/推断合集103_074.jpg", "back": "images/推断合集103_075.jpg"}, {"id": 39, "front": "images/推断合集103_076.jpg", "back": "images/推断合集103_077.jpg"}, {"id": 40, "front": "images/推断合集103_078.jpg", "back": "images/推断合集103_079.jpg"}, {"id": 41, "front": "images/推断合集103_080.jpg", "back": "images/推断合集103_081.jpg"}, {"id": 42, "front": "images/推断合集103_082.jpg", "back": "images/推断合集103_083.jpg"}, {"id": 43, "front": "images/推断合集103_084.jpg", "back": "images/推断合集103_085.jpg"}, {"id": 44, "front": "images/推断合集103_086.jpg", "back": "images/推断合集103_087.jpg"}, {"id": 45, "front": "images/推断合集103_088.jpg", "back": "images/推断合集103_089.jpg"}, {"id": 46, "front": "images/推断合集103_090.jpg", "back": "images/推断合集103_091.jpg"}, {"id": 47, "front": "images/推断合集103_092.jpg", "back": "images/推断合集103_093.jpg"}, {"id": 48, "front": "images/推断合集103_094.jpg", "back": "images/推断合集103_095.jpg"}, {"id": 49, "front": "images/推断合集103_096.jpg", "back": "images/推断合集103_097.jpg"}, {"id": 50, "front": "images/推断合集103_098.jpg", "back": "images/推断合集103_099.jpg"}, {"id": 51, "front": "images/推断合集103_100.jpg", "back": "images/推断合集103_101.jpg"}, {"id": 52, "front": "images/推断合集103_102.jpg", "back": "images/推断合集103_103.jpg"}, {"id": 53, "front": "images/推断合集103_104.jpg", "back": "images/推断合集103_105.jpg"}, {"id": 54, "front": "images/推断合集103_106.jpg", "back": "images/推断合集103_107.jpg"}, {"id": 55, "front": "images/推断合集103_108.jpg", "back": "images/推断合集103_109.jpg"}, {"id": 56, "front": "images/推断合集103_110.jpg", "back": "images/推断合集103_111.jpg"}, {"id": 57, "front": "images/推断合集103_112.jpg", "back": "images/推断合集103_113.jpg"}, {"id": 58, "front": "images/推断合集103_114.jpg", "back": "images/推断合集103_115.jpg"}, {"id": 59, "front": "images/推断合集103_116.jpg", "back": "images/推断合集103_117.jpg"}, {"id": 60, "front": "images/推断合集103_118.jpg", "back": "images/推断合集103_119.jpg"}, {"id": 61, "front": "images/推断合集103_120.jpg", "back": "images/推断合集103_121.jpg"}, {"id": 62, "front": "images/推断合集103_122.jpg", "back": "images/推断合集103_123.jpg"}, {"id": 63, "front": "images/推断合集103_124.jpg", "back": "images/推断合集103_125.jpg"}, {"id": 64, "front": "images/推断合集103_126.jpg", "back": "images/推断合集103_127.jpg"}, {"id": 65, "front": "images/推断合集103_128.jpg", "back": "images/推断合集103_129.jpg"}, {"id": 66, "front": "images/推断合集103_130.jpg", "back": "images/推断合集103_131.jpg"}, {"id": 67, "front": "images/推断合集103_132.jpg", "back": "images/推断合集103_133.jpg"}, {"id": 68, "front": "images/推断合集103_134.jpg", "back": "images/推断合集103_135.jpg"}, {"id": 69, "front": "images/推断合集103_136.jpg", "back": "images/推断合集103_137.jpg"}, {"id": 70, "front": "images/推断合集103_138.jpg", "back": "images/推断合集103_139.jpg"}, {"id": 71, "front": "images/推断合集103_140.jpg", "back": "images/推断合集103_141.jpg"}, {"id": 72, "front": "images/推断合集103_142.jpg", "back": "images/推断合集103_143.jpg"}, {"id": 73, "front": "images/推断合集103_144.jpg", "back": "images/推断合集103_145.jpg"}, {"id": 74, "front": "images/推断合集103_146.jpg", "back": "images/推断合集103_147.jpg"}, {"id": 75, "front": "images/推断合集103_148.jpg", "back": "images/推断合集103_149.jpg"}, {"id": 76, "front": "images/推断合集103_150.jpg", "back": "images/推断合集103_151.jpg"}, {"id": 77, "front": "images/推断合集103_152.jpg", "back": "images/推断合集103_153.jpg"}, {"id": 78, "front": "images/推断合集103_154.jpg", "back": "images/推断合集103_155.jpg"}, {"id": 79, "front": "images/推断合集103_156.jpg", "back": "images/推断合集103_157.jpg"}, {"id": 80, "front": "images/推断合集103_158.jpg", "back": "images/推断合集103_159.jpg"}, {"id": 81, "front": "images/推断合集103_160.jpg", "back": "images/推断合集103_161.jpg"}, {"id": 82, "front": "images/推断合集103_162.jpg", "back": "images/推断合集103_163.jpg"}, {"id": 83, "front": "images/推断合集103_164.jpg", "back": "images/推断合集103_165.jpg"}, {"id": 84, "front": "images/推断合集103_166.jpg", "back": "images/推断合集103_167.jpg"}, {"id": 85, "front": "images/推断合集103_168.jpg", "back": "images/推断合集103_169.jpg"}, {"id": 86, "front": "images/推断合集103_170.jpg", "back": "images/推断合集103_171.jpg"}, {"id": 87, "front": "images/推断合集103_172.jpg", "back": "images/推断合集103_173.jpg"}, {"id": 88, "front": "images/推断合集103_174.jpg", "back": "images/推断合集103_175.jpg"}, {"id": 89, "front": "images/推断合集103_176.jpg", "back": "images/推断合集103_177.jpg"}, {"id": 90, "front": "images/推断合集103_178.jpg", "back": "images/推断合集103_179.jpg"}, {"id": 91, "front": "images/推断合集103_180.jpg", "back": "images/推断合集103_181.jpg"}, {"id": 92, "front": "images/推断合集103_182.jpg", "back": "images/推断合集103_183.jpg"}, {"id": 93, "front": "images/推断合集103_184.jpg", "back": "images/推断合集103_185.jpg"}, {"id": 94, "front": "images/推断合集103_186.jpg", "back": "images/推断合集103_187.jpg"}, {"id": 95, "front": "images/推断合集103_188.jpg", "back": "images/推断合集103_189.jpg"}, {"id": 96, "front": "images/推断合集103_190.jpg", "back": "images/推断合集103_191.jpg"}, {"id": 97, "front": "images/推断合集103_192.jpg", "back": "images/推断合集103_193.jpg"}, {"id": 98, "front": "images/推断合集103_194.jpg", "back": "images/推断合集103_195.jpg"}, {"id": 99, "front": "images/推断合集103_196.jpg", "back": "images/推断合集103_197.jpg"}, {"id": 100, "front": "images/推断合集103_198.jpg", "back": "images/推断合集103_199.jpg"}, {"id": 101, "front": "images/推断合集103_200.jpg", "back": "images/推断合集103_201.jpg"}, {"id": 102, "front": "images/推断合集103_202.jpg", "back": "images/推断合集103_203.jpg"}, {"id": 103, "front": "images/推断合集103_204.jpg", "back": "images/推断合集103_205.jpg"}, {"id": 104, "front": "images/推断合集103_206.jpg", "back": "images/推断合集103_207.jpg"}, {"id": 105, "front": "images/推断合集103_208.jpg", "back": "images/推断合集103_209.jpg"}, {"id": 106, "front": "images/推断合集103_210.jpg", "back": "images/推断合集103_211.jpg"}, {"id": 107, "front": "images/推断合集103_212.jpg", "back": "images/推断合集103_213.jpg"}, {"id": 108, "front": "images/推断合集103_214.jpg", "back": "images/推断合集103_215.jpg"}, {"id": 109, "front": "images/推断合集103_216.jpg", "back": "images/推断合集103_217.jpg"}, {"id": 110, "front": "images/推断合集103_218.jpg", "back": "images/推断合集103_219.jpg"}];
+    let queue = [...deck];
+    let isFlipped = false;
+    function update() {
+      isFlipped = false;
+      document.getElementById('cardInner').classList.remove('flipped');
+      if (queue.length === 0) {
+        document.getElementById('prog').innerText = '🎉 已背完！';
+        document.getElementById('fImg').src = '';
+        document.getElementById('bImg').src = '';
+        return;
+      }
+      document.getElementById('prog').innerText = '剩余 ' + queue.length + ' / ' + deck.length;
+      document.getElementById('fImg').src = queue[0].front;
+      document.getElementById('bImg').src = queue[0].back;
+    }
+    function flipCard() {
+      if (queue.length === 0) return;
+      isFlipped = !isFlipped;
+      document.getElementById('cardInner').classList.toggle('flipped', isFlipped);
+    }
+    function rate(pass) {
+      if (queue.length === 0) return;
+      if (pass) { queue.shift(); } else { queue.push(queue.shift()); }
+      update();
+    }
+    function resetDeck() { queue = [...deck]; update(); }
+    update();
+  </script>
 </body>
 </html>

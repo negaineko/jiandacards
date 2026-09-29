@@ -1,23 +1,129 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>化学刷题卡背题系统</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>化学刷题中心</title>
 <style>
-  * { box-sizing: border-box; }
-  body { margin: 0; padding: env(safe-area-inset-top) 20px env(safe-area-inset-bottom); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f2f2f7; color: #1c1c1e; }
-  .header { padding: 24px 0 16px; font-size: 26px; font-weight: 800; }
-  .deck-list { display: flex; flex-direction: column; gap: 12px; }
-  .deck-item { display: flex; justify-content: space-between; align-items: center; background: #fff; padding: 18px 20px; border-radius: 14px; text-decoration: none; color: inherit; box-shadow: 0 2px 8px rgba(0,0,0,0.04); font-size: 16px; font-weight: 600; }
-  .deck-item:active { background: #e5e5ea; }
-  .deck-count { font-size: 14px; color: #8e8e93; font-weight: normal; }
+  body {
+    margin: 0;
+    padding: 24px 16px 50px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: #f2f2f7;
+    color: #1c1c1e;
+    max-width: 650px;
+    margin: 0 auto;
+    -webkit-font-smoothing: antialiased;
+  }
+  header { margin-bottom: 24px; text-align: center; }
+  h1 { font-size: 26px; font-weight: 700; margin: 0 0 6px; }
+  .subtitle { font-size: 13px; color: #8e8e93; }
+  .section-title { font-size: 15px; font-weight: 700; color: #6e6e73; text-transform: uppercase; margin: 24px 0 10px 4px; display: flex; align-items: center; gap: 6px; }
+  .grid { display: flex; flex-direction: column; gap: 10px; }
+  .deck-card { background: #ffffff; border-radius: 14px; padding: 16px 18px; text-decoration: none; color: inherit; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 8px rgba(0,0,0,0.04); transition: transform 0.1s, background 0.1s; }
+  .deck-card:active { transform: scale(0.98); background: #f8f8fb; }
+  .deck-name { font-size: 16px; font-weight: 600; color: #1c1c1e; }
+  .deck-cnt { font-size: 12px; color: #8e8e93; margin-top: 3px; }
+  .arrow { color: #c7c7cc; font-size: 20px; font-weight: 600; }
+  .tag { display: inline-block; padding: 2px 8px; border-radius: 6px; font-size: 11px; font-weight: 600; }
+  .tag-ana { background: #e0f2fe; color: #0284c7; }
+  .tag-inorg { background: #f3e8ff; color: #7e22ce; }
 </style>
 </head>
 <body>
-  <div class="header">📚 无机化学闪卡</div>
-  <div class="deck-list">
-    <a class="deck-item" href="1_吉大真题简答34_03_19_.html"><div class="deck-name">1.吉大真题简答34（03-19）</div><div class="deck-count">69 组题卡 ›</div></a><a class="deck-item" href="1碳族元素30.html"><div class="deck-name">1碳族元素30</div><div class="deck-count">31 组题卡 ›</div></a><a class="deck-item" href="2_学习指导简答37_7_2.html"><div class="deck-name">2.学习指导简答37+7 2</div><div class="deck-count">54 组题卡 ›</div></a><a class="deck-item" href="2氮族元素41.html"><div class="deck-name">2氮族元素41</div><div class="deck-count">43 组题卡 ›</div></a><a class="deck-item" href="3氧族元素35.html"><div class="deck-name">3氧族元素35</div><div class="deck-count">35 组题卡 ›</div></a><a class="deck-item" href="4卤素40.html"><div class="deck-name">4卤素40</div><div class="deck-count">40 组题卡 ›</div></a><a class="deck-item" href="5铜锌副族元素32.html"><div class="deck-name">5铜锌副族元素32</div><div class="deck-count">32 组题卡 ›</div></a><a class="deck-item" href="6铬锰元素33.html"><div class="deck-name">6铬锰元素33</div><div class="deck-count">33 组题卡 ›</div></a><a class="deck-item" href="7铁系元素29.html"><div class="deck-name">7铁系元素29</div><div class="deck-count">30 组题卡 ›</div></a><a class="deck-item" href="8配合物47.html"><div class="deck-name">8配合物47</div><div class="deck-count">47 组题卡 ›</div></a><a class="deck-item" href="9结构综合97.html"><div class="deck-name">9结构综合97</div><div class="deck-count">97 组题卡 ›</div></a><a class="deck-item" href="推断合集103.html"><div class="deck-name">推断合集103</div><div class="deck-count">110 组题卡 ›</div></a>
+  <header>
+    <h1>🧪 分析&无机化学刷题卡片</h1>
+    <div class="subtitle">我恨goodnotes</div>
+  </header>
+  <div class="section-title">📊 分析化学 <span class="tag tag-ana">2 组</span></div>
+  <div class="grid">
+    <a href="1.吉大真题简答34 (03-19) .html" class="deck-card">
+      <div class="deck-info">
+        <div class="deck-name">1.吉大真题简答34（03-19）</div>
+        <div class="deck-cnt">共 69 题</div>
+      </div>
+      <div class="arrow">›</div>
+    </a>
+    <a href="2.学习指导简答37+7 2.html" class="deck-card">
+      <div class="deck-info">
+        <div class="deck-name">2.学习指导简答37+7 2</div>
+        <div class="deck-cnt">共 54 题</div>
+      </div>
+      <div class="arrow">›</div>
+    </a>
+  </div>
+  <div class="section-title">⚗️ 无机化学 <span class="tag tag-inorg">10 组</span></div>
+  <div class="grid">
+    <a href="1碳族元素30.html" class="deck-card">
+      <div class="deck-info">
+        <div class="deck-name">1碳族元素30</div>
+        <div class="deck-cnt">共 31 题</div>
+      </div>
+      <div class="arrow">›</div>
+    </a>
+    <a href="2氮族元素41.html" class="deck-card">
+      <div class="deck-info">
+        <div class="deck-name">2氮族元素41</div>
+        <div class="deck-cnt">共 43 题</div>
+      </div>
+      <div class="arrow">›</div>
+    </a>
+    <a href="3氧族元素35.html" class="deck-card">
+      <div class="deck-info">
+        <div class="deck-name">3氧族元素35</div>
+        <div class="deck-cnt">共 35 题</div>
+      </div>
+      <div class="arrow">›</div>
+    </a>
+    <a href="4卤素40.html" class="deck-card">
+      <div class="deck-info">
+        <div class="deck-name">4卤素40</div>
+        <div class="deck-cnt">共 40 题</div>
+      </div>
+      <div class="arrow">›</div>
+    </a>
+    <a href="5铜锌副族元素32.html" class="deck-card">
+      <div class="deck-info">
+        <div class="deck-name">5铜锌副族元素32</div>
+        <div class="deck-cnt">共 32 题</div>
+      </div>
+      <div class="arrow">›</div>
+    </a>
+    <a href="6铬锰元素33.html" class="deck-card">
+      <div class="deck-info">
+        <div class="deck-name">6铬锰元素33</div>
+        <div class="deck-cnt">共 33 题</div>
+      </div>
+      <div class="arrow">›</div>
+    </a>
+    <a href="7铁系元素29.html" class="deck-card">
+      <div class="deck-info">
+        <div class="deck-name">7铁系元素29</div>
+        <div class="deck-cnt">共 30 题</div>
+      </div>
+      <div class="arrow">›</div>
+    </a>
+    <a href="8配合物47.html" class="deck-card">
+      <div class="deck-info">
+        <div class="deck-name">8配合物47</div>
+        <div class="deck-cnt">共 47 题</div>
+      </div>
+      <div class="arrow">›</div>
+    </a>
+    <a href="9结构综合97.html" class="deck-card">
+      <div class="deck-info">
+        <div class="deck-name">9结构综合97</div>
+        <div class="deck-cnt">共 97 题</div>
+      </div>
+      <div class="arrow">›</div>
+    </a>
+    <a href="推断合集103.html" class="deck-card">
+      <div class="deck-info">
+        <div class="deck-name">推断合集103</div>
+        <div class="deck-cnt">共 110 题</div>
+      </div>
+      <div class="arrow">›</div>
+    </a>
   </div>
 </body>
 </html>

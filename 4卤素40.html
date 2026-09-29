@@ -1,85 +1,85 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>4卤素40</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>4卤素40 - 刷题卡</title>
 <style>
-  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-  body { margin: 0; padding: env(safe-area-inset-top) 16px env(safe-area-inset-bottom); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f2f2f7; display: flex; flex-direction: column; height: 100vh; }
-  .header { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; font-size: 15px; font-weight: 600; color: #1c1c1e; }
-  .btn-link { color: #007aff; text-decoration: none; cursor: pointer; }
-  .card-container { flex: 1; position: relative; margin-bottom: 16px; perspective: 1000px; }
-  .card { width: 100%; height: 100%; background: #fff; border-radius: 18px; box-shadow: 0 4px 16px rgba(0,0,0,0.06); display: flex; flex-direction: column; overflow: hidden; padding: 16px; cursor: pointer; }
-  .badge { align-self: flex-start; font-size: 12px; font-weight: 600; padding: 4px 8px; border-radius: 6px; margin-bottom: 10px; }
-  .front-badge { background: #f2f2f7; color: #8e8e93; }
-  .back-badge { background: #e8f5e9; color: #2e7d32; }
-  .img-box { flex: 1; display: flex; align-items: center; justify-content: center; overflow: hidden; }
-  .img-box img { max-width: 100%; max-height: 100%; object-fit: contain; }
-  .actions { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 10px; height: 50px; }
-  .btn { border: none; border-radius: 12px; font-size: 15px; font-weight: 600; cursor: pointer; }
-  .btn-flip { background: #007aff; color: #fff; }
-  .btn-fail { background: #ffebee; color: #c62828; }
-  .btn-pass { background: #e8f5e9; color: #2e7d32; }
+  :root { --bg: #f2f2f7; --card-bg: #fff; --text: #1c1c1e; --primary: #007aff; --danger: #ff3b30; --success: #34c759; }
+  body { margin: 0; padding: 16px; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--text); display: flex; flex-direction: column; align-items: center; min-height: 90vh; user-select: none; }
+  .header { width: 100%; max-width: 680px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+  .nav-back { font-size: 14px; color: var(--primary); text-decoration: none; font-weight: 600; padding: 6px 10px; background: #e5e5ea; border-radius: 8px; }
+  .deck-title { font-size: 15px; font-weight: 600; color: #3a3a3c; max-width: 45%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .btn-reset { padding: 6px 12px; font-size: 13px; background: #e5e5ea; border: none; border-radius: 8px; cursor: pointer; color: #1c1c1e; font-weight: 500; }
+  .card-box { width: 100%; max-width: 680px; min-height: 380px; max-height: 62vh; height: 52vh; perspective: 1200px; cursor: pointer; }
+  .card-inner { width: 100%; height: 100%; position: relative; transform-style: preserve-3d; transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1); border-radius: 18px; box-shadow: 0 10px 25px rgba(0,0,0,0.07); }
+  .card-inner.flipped { transform: rotateY(180deg); }
+  .card-face { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; background: var(--card-bg); border-radius: 18px; display: flex; justify-content: center; align-items: center; padding: 14px; box-sizing: border-box; overflow: hidden; }
+  .card-back { transform: rotateY(180deg); background: #fafbfc; }
+  .card-face img { max-width: 100%; max-height: 100%; object-fit: contain; pointer-events: none; }
+  .badge { position: absolute; top: 12px; left: 16px; font-size: 11px; font-weight: 700; color: #aeaeb2; letter-spacing: 0.5px; }
+  .prog-tag { position: absolute; top: 12px; right: 16px; font-size: 12px; color: #8e8e93; font-weight: 600; }
+  .controls { display: flex; gap: 12px; width: 100%; max-width: 680px; margin-top: 18px; }
+  button.action-btn { flex: 1; padding: 15px; border-radius: 12px; border: none; font-size: 16px; font-weight: 600; cursor: pointer; transition: transform 0.1s; }
+  button.action-btn:active { transform: scale(0.97); }
+  .btn-flip { background: var(--primary); color: #fff; }
+  .btn-again { background: #ffebeb; color: var(--danger); }
+  .btn-pass { background: #e6f9ed; color: var(--success); }
 </style>
 </head>
 <body>
   <div class="header">
-    <a href="index.html" class="btn-link">‹ 目录</a>
-    <span>4卤素40</span>
-    <span id="counter">剩余 0/0</span>
+    <a href="index.html" class="nav-back">‹ 目录</a>
+    <div class="deck-title">4卤素40</div>
+    <button class="btn-reset" onclick="resetDeck()">重置本轮</button>
   </div>
-  <div class="card-container" onclick="flipCard()">
-    <div class="card">
-      <div id="sideTag" class="badge front-badge">正面 / 题目</div>
-      <div class="img-box">
-        <img id="cardImg" src="" alt="卡片内容">
+  <div class="card-box" onclick="flipCard()">
+    <div class="card-inner" id="cardInner">
+      <div class="card-face card-front">
+        <span class="badge">正面 / 题目</span>
+        <span class="prog-tag" id="prog"></span>
+        <img id="fImg" src="" alt="题目">
+      </div>
+      <div class="card-face card-back">
+        <span class="badge">背面 / 答案</span>
+        <img id="bImg" src="" alt="答案">
       </div>
     </div>
   </div>
-  <div class="actions">
-    <button class="btn btn-flip" onclick="flipCard()">翻转</button>
-    <button class="btn btn-fail" onclick="nextCard(false)">没记住 (重排)</button>
-    <button class="btn btn-pass" onclick="nextCard(true)">记住了 (移出)</button>
+  <div class="controls">
+    <button class="action-btn btn-flip" onclick="flipCard()">翻转</button>
+    <button class="action-btn btn-again" onclick="rate(false)">没记住 (重排)</button>
+    <button class="action-btn btn-pass" onclick="rate(true)">记住了 (移出)</button>
   </div>
-
-<script>
-const rawCards = [{"id": 1, "front": "images/4卤素40/card_0000.jpg", "back": "images/4卤素40/card_0001.jpg"}, {"id": 2, "front": "images/4卤素40/card_0002.jpg", "back": "images/4卤素40/card_0003.jpg"}, {"id": 3, "front": "images/4卤素40/card_0004.jpg", "back": "images/4卤素40/card_0005.jpg"}, {"id": 4, "front": "images/4卤素40/card_0006.jpg", "back": "images/4卤素40/card_0007.jpg"}, {"id": 5, "front": "images/4卤素40/card_0008.jpg", "back": "images/4卤素40/card_0009.jpg"}, {"id": 6, "front": "images/4卤素40/card_0010.jpg", "back": "images/4卤素40/card_0011.jpg"}, {"id": 7, "front": "images/4卤素40/card_0012.jpg", "back": "images/4卤素40/card_0013.jpg"}, {"id": 8, "front": "images/4卤素40/card_0014.jpg", "back": "images/4卤素40/card_0015.jpg"}, {"id": 9, "front": "images/4卤素40/card_0016.jpg", "back": "images/4卤素40/card_0017.jpg"}, {"id": 10, "front": "images/4卤素40/card_0018.jpg", "back": "images/4卤素40/card_0019.jpg"}, {"id": 11, "front": "images/4卤素40/card_0020.jpg", "back": "images/4卤素40/card_0021.jpg"}, {"id": 12, "front": "images/4卤素40/card_0022.jpg", "back": "images/4卤素40/card_0023.jpg"}, {"id": 13, "front": "images/4卤素40/card_0024.jpg", "back": "images/4卤素40/card_0025.jpg"}, {"id": 14, "front": "images/4卤素40/card_0026.jpg", "back": "images/4卤素40/card_0027.jpg"}, {"id": 15, "front": "images/4卤素40/card_0028.jpg", "back": "images/4卤素40/card_0029.jpg"}, {"id": 16, "front": "images/4卤素40/card_0030.jpg", "back": "images/4卤素40/card_0031.jpg"}, {"id": 17, "front": "images/4卤素40/card_0032.jpg", "back": "images/4卤素40/card_0033.jpg"}, {"id": 18, "front": "images/4卤素40/card_0034.jpg", "back": "images/4卤素40/card_0035.jpg"}, {"id": 19, "front": "images/4卤素40/card_0036.jpg", "back": "images/4卤素40/card_0037.jpg"}, {"id": 20, "front": "images/4卤素40/card_0038.jpg", "back": "images/4卤素40/card_0039.jpg"}, {"id": 21, "front": "images/4卤素40/card_0040.jpg", "back": "images/4卤素40/card_0041.jpg"}, {"id": 22, "front": "images/4卤素40/card_0042.jpg", "back": "images/4卤素40/card_0043.jpg"}, {"id": 23, "front": "images/4卤素40/card_0044.jpg", "back": "images/4卤素40/card_0045.jpg"}, {"id": 24, "front": "images/4卤素40/card_0046.jpg", "back": "images/4卤素40/card_0047.jpg"}, {"id": 25, "front": "images/4卤素40/card_0048.jpg", "back": "images/4卤素40/card_0049.jpg"}, {"id": 26, "front": "images/4卤素40/card_0050.jpg", "back": "images/4卤素40/card_0051.jpg"}, {"id": 27, "front": "images/4卤素40/card_0052.jpg", "back": "images/4卤素40/card_0053.jpg"}, {"id": 28, "front": "images/4卤素40/card_0054.jpg", "back": "images/4卤素40/card_0055.jpg"}, {"id": 29, "front": "images/4卤素40/card_0056.jpg", "back": "images/4卤素40/card_0057.jpg"}, {"id": 30, "front": "images/4卤素40/card_0058.jpg", "back": "images/4卤素40/card_0059.jpg"}, {"id": 31, "front": "images/4卤素40/card_0060.jpg", "back": "images/4卤素40/card_0061.jpg"}, {"id": 32, "front": "images/4卤素40/card_0062.jpg", "back": "images/4卤素40/card_0063.jpg"}, {"id": 33, "front": "images/4卤素40/card_0064.jpg", "back": "images/4卤素40/card_0065.jpg"}, {"id": 34, "front": "images/4卤素40/card_0066.jpg", "back": "images/4卤素40/card_0067.jpg"}, {"id": 35, "front": "images/4卤素40/card_0068.jpg", "back": "images/4卤素40/card_0069.jpg"}, {"id": 36, "front": "images/4卤素40/card_0070.jpg", "back": "images/4卤素40/card_0071.jpg"}, {"id": 37, "front": "images/4卤素40/card_0072.jpg", "back": "images/4卤素40/card_0073.jpg"}, {"id": 38, "front": "images/4卤素40/card_0074.jpg", "back": "images/4卤素40/card_0075.jpg"}, {"id": 39, "front": "images/4卤素40/card_0076.jpg", "back": "images/4卤素40/card_0077.jpg"}, {"id": 40, "front": "images/4卤素40/card_0078.jpg", "back": "images/4卤素40/card_0079.jpg"}];
-let queue = [...rawCards];
-let currentCard = null;
-let isFront = true;
-
-function updateCard() {
-  if (queue.length === 0) {
-    document.getElementById('counter').innerText = '已全部掌握！';
-    document.getElementById('cardImg').src = '';
-    document.getElementById('sideTag').innerText = '🎉 恭喜完成！';
-    return;
-  }
-  currentCard = queue[0];
-  isFront = true;
-  document.getElementById('counter').innerText = '剩余 ' + queue.length + ' / ' + rawCards.length;
-  document.getElementById('sideTag').innerText = '正面 / 题目';
-  document.getElementById('sideTag').className = 'badge front-badge';
-  document.getElementById('cardImg').src = currentCard.front;
-}
-
-function flipCard() {
-  if (!currentCard) return;
-  isFront = !isFront;
-  document.getElementById('sideTag').innerText = isFront ? '正面 / 题目' : '背面 / 答案';
-  document.getElementById('sideTag').className = isFront ? 'badge front-badge' : 'badge back-badge';
-  document.getElementById('cardImg').src = isFront ? currentCard.front : currentCard.back;
-}
-
-function nextCard(passed) {
-  if (queue.length === 0) return;
-  const card = queue.shift();
-  if (!passed) queue.push(card);
-  updateCard();
-}
-
-updateCard();
-</script>
+  <script>
+    const deck = [{"id": 1, "front": "images/4卤素40_000.jpg", "back": "images/4卤素40_001.jpg"}, {"id": 2, "front": "images/4卤素40_002.jpg", "back": "images/4卤素40_003.jpg"}, {"id": 3, "front": "images/4卤素40_004.jpg", "back": "images/4卤素40_005.jpg"}, {"id": 4, "front": "images/4卤素40_006.jpg", "back": "images/4卤素40_007.jpg"}, {"id": 5, "front": "images/4卤素40_008.jpg", "back": "images/4卤素40_009.jpg"}, {"id": 6, "front": "images/4卤素40_010.jpg", "back": "images/4卤素40_011.jpg"}, {"id": 7, "front": "images/4卤素40_012.jpg", "back": "images/4卤素40_013.jpg"}, {"id": 8, "front": "images/4卤素40_014.jpg", "back": "images/4卤素40_015.jpg"}, {"id": 9, "front": "images/4卤素40_016.jpg", "back": "images/4卤素40_017.jpg"}, {"id": 10, "front": "images/4卤素40_018.jpg", "back": "images/4卤素40_019.jpg"}, {"id": 11, "front": "images/4卤素40_020.jpg", "back": "images/4卤素40_021.jpg"}, {"id": 12, "front": "images/4卤素40_022.jpg", "back": "images/4卤素40_023.jpg"}, {"id": 13, "front": "images/4卤素40_024.jpg", "back": "images/4卤素40_025.jpg"}, {"id": 14, "front": "images/4卤素40_026.jpg", "back": "images/4卤素40_027.jpg"}, {"id": 15, "front": "images/4卤素40_028.jpg", "back": "images/4卤素40_029.jpg"}, {"id": 16, "front": "images/4卤素40_030.jpg", "back": "images/4卤素40_031.jpg"}, {"id": 17, "front": "images/4卤素40_032.jpg", "back": "images/4卤素40_033.jpg"}, {"id": 18, "front": "images/4卤素40_034.jpg", "back": "images/4卤素40_035.jpg"}, {"id": 19, "front": "images/4卤素40_036.jpg", "back": "images/4卤素40_037.jpg"}, {"id": 20, "front": "images/4卤素40_038.jpg", "back": "images/4卤素40_039.jpg"}, {"id": 21, "front": "images/4卤素40_040.jpg", "back": "images/4卤素40_041.jpg"}, {"id": 22, "front": "images/4卤素40_042.jpg", "back": "images/4卤素40_043.jpg"}, {"id": 23, "front": "images/4卤素40_044.jpg", "back": "images/4卤素40_045.jpg"}, {"id": 24, "front": "images/4卤素40_046.jpg", "back": "images/4卤素40_047.jpg"}, {"id": 25, "front": "images/4卤素40_048.jpg", "back": "images/4卤素40_049.jpg"}, {"id": 26, "front": "images/4卤素40_050.jpg", "back": "images/4卤素40_051.jpg"}, {"id": 27, "front": "images/4卤素40_052.jpg", "back": "images/4卤素40_053.jpg"}, {"id": 28, "front": "images/4卤素40_054.jpg", "back": "images/4卤素40_055.jpg"}, {"id": 29, "front": "images/4卤素40_056.jpg", "back": "images/4卤素40_057.jpg"}, {"id": 30, "front": "images/4卤素40_058.jpg", "back": "images/4卤素40_059.jpg"}, {"id": 31, "front": "images/4卤素40_060.jpg", "back": "images/4卤素40_061.jpg"}, {"id": 32, "front": "images/4卤素40_062.jpg", "back": "images/4卤素40_063.jpg"}, {"id": 33, "front": "images/4卤素40_064.jpg", "back": "images/4卤素40_065.jpg"}, {"id": 34, "front": "images/4卤素40_066.jpg", "back": "images/4卤素40_067.jpg"}, {"id": 35, "front": "images/4卤素40_068.jpg", "back": "images/4卤素40_069.jpg"}, {"id": 36, "front": "images/4卤素40_070.jpg", "back": "images/4卤素40_071.jpg"}, {"id": 37, "front": "images/4卤素40_072.jpg", "back": "images/4卤素40_073.jpg"}, {"id": 38, "front": "images/4卤素40_074.jpg", "back": "images/4卤素40_075.jpg"}, {"id": 39, "front": "images/4卤素40_076.jpg", "back": "images/4卤素40_077.jpg"}, {"id": 40, "front": "images/4卤素40_078.jpg", "back": "images/4卤素40_079.jpg"}];
+    let queue = [...deck];
+    let isFlipped = false;
+    function update() {
+      isFlipped = false;
+      document.getElementById('cardInner').classList.remove('flipped');
+      if (queue.length === 0) {
+        document.getElementById('prog').innerText = '🎉 已背完！';
+        document.getElementById('fImg').src = '';
+        document.getElementById('bImg').src = '';
+        return;
+      }
+      document.getElementById('prog').innerText = '剩余 ' + queue.length + ' / ' + deck.length;
+      document.getElementById('fImg').src = queue[0].front;
+      document.getElementById('bImg').src = queue[0].back;
+    }
+    function flipCard() {
+      if (queue.length === 0) return;
+      isFlipped = !isFlipped;
+      document.getElementById('cardInner').classList.toggle('flipped', isFlipped);
+    }
+    function rate(pass) {
+      if (queue.length === 0) return;
+      if (pass) { queue.shift(); } else { queue.push(queue.shift()); }
+      update();
+    }
+    function resetDeck() { queue = [...deck]; update(); }
+    update();
+  </script>
 </body>
 </html>
